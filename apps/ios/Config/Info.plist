@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>LumiWebsiteURL</key>
+	<string>$(LUMI_WEBSITE_URL)</string>
+	<key>TuyaAppKey</key>
+	<string>$(TUYA_APP_KEY)</string>
+	<key>TuyaAppSecret</key>
+	<string>$(TUYA_APP_SECRET)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+</dict>
+</plist>

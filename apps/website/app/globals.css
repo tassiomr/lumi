@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+@theme {
+  --color-electric-400: #4d8dff;
+  --color-electric-500: #2f6bff;
+  --color-electric-600: #1f50e6;
+  --color-violet-400: #a47bff;
+  --color-violet-500: #8b5cf6;
+  --color-violet-600: #7039e8;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+:root {
+  --bg: #fbfbfd;
+  --bg-elevated: #ffffff;
+  --fg: #0b0c10;
+  --fg-muted: #565a66;
+  --border: rgb(11 12 16 / 0.09);
+  --glow-a: rgb(47 107 255 / 0.18);
+  --glow-b: rgb(139 92 246 / 0.16);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #07080c;
+    --bg-elevated: #10121a;
+    --fg: #f4f5f8;
+    --fg-muted: #a1a6b4;
+    --border: rgb(255 255 255 / 0.09);
+    --glow-a: rgb(47 107 255 / 0.28);
+    --glow-b: rgb(139 92 246 / 0.24);
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-elevated: var(--bg-elevated);
+  --color-fg: var(--fg);
+  --color-muted: var(--fg-muted);
+  --color-line: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-electric-500);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, var(--color-electric-500), var(--color-violet-500));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.glow-backdrop {
+  background:
+    radial-gradient(40rem 26rem at 20% 0%, var(--glow-a), transparent 70%),
+    radial-gradient(36rem 24rem at 85% 10%, var(--glow-b), transparent 70%);
+}
+
+/* Revelação suave ao rolar, sem JavaScript, onde o navegador suporta scroll-driven animations. */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
+}
+
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.06); }
+}
+
+.animate-breathe { animation: breathe 6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal, .animate-breathe { animation: none !important; }
+}
+
+/* Tipografia dos documentos legais */
+.prose-legal h2 {
+  font-size: 1.375rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  margin-top: 2.75rem;
+  margin-bottom: 0.75rem;
+  scroll-margin-top: 6rem;
+}
+.prose-legal h3 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+.prose-legal p, .prose-legal li { color: var(--fg-muted); line-height: 1.7; }
+.prose-legal p + p { margin-top: 0.9rem; }
+.prose-legal ul, .prose-legal ol { margin: 0.75rem 0; padding-left: 1.25rem; }
+.prose-legal ul { list-style: disc; }
+.prose-legal ol { list-style: decimal; }
+.prose-legal li + li { margin-top: 0.4rem; }
+.prose-legal strong { color: var(--fg); font-weight: 600; }
+.prose-legal a { color: var(--color-electric-500); text-decoration: underline; text-underline-offset: 3px; }
+.prose-legal table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.925rem; }
+.prose-legal th, .prose-legal td { text-align: left; vertical-align: top; padding: 0.65rem 0.75rem; border-bottom: 1px solid var(--border); }
+.prose-legal th { color: var(--fg); font-weight: 600; }
+.prose-legal td { color: var(--fg-muted); }

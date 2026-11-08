@@ -1,0 +1,11 @@
+// Configuração compartilhada do Lumi. Valores secretos ficam em Secrets.xcconfig (fora do git).
+
+// Domínio oficial do site (o mesmo de NEXT_PUBLIC_SITE_URL). Use https:/$()/dominio — o $() evita
+// que "//" seja lido como comentário. Vazio = a seção "Sobre e Legal" mostra um aviso em vez de links.
+LUMI_WEBSITE_URL =
+
+// Credenciais do app na Tuya IoT Platform (preencha em Secrets.xcconfig, nunca aqui).
+TUYA_APP_KEY =
+TUYA_APP_SECRET =
+
+#include? "Secrets.xcconfig"
