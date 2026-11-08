@@ -19,7 +19,7 @@ export default async function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "80px",
-          background: "radial-gradient(900px 500px at 15% 0%, rgba(47,107,255,0.45), transparent), radial-gradient(800px 500px at 90% 20%, rgba(139,92,246,0.4), transparent), #07080c",
+          background: "radial-gradient(900px 500px at 15% 0%, rgba(160,134,236,0.38), transparent), radial-gradient(800px 500px at 90% 20%, rgba(96,150,232,0.32), transparent), #08090c",
           color: "#f4f5f8",
           fontFamily: "sans-serif",
         }}
@@ -27,7 +27,7 @@ export default async function OpengraphImage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} width={120} height={120} alt="" />
         <div style={{ marginTop: 40, fontSize: 84, fontWeight: 700, letterSpacing: "-0.03em" }}>{site.name}</div>
-        <div style={{ marginTop: 8, fontSize: 44, color: "#c9c4ff" }}>{site.tagline}</div>
+        <div style={{ marginTop: 8, fontSize: 44, color: "#e2d6ff" }}>{site.tagline}</div>
         <div style={{ marginTop: 36, fontSize: 26, color: "#a1a6b4" }}>{`Para iPhone · ${site.developer}`}</div>
       </div>
     ),

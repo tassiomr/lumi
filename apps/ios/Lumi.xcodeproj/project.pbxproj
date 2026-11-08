@@ -29,8 +29,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		A10000000000000000000701 /* Lumi */ = {isa = PBXFileSystemSynchronizedRootGroup; path = Lumi; sourceTree = "<group>"; };
-		A10000000000000000000702 /* LumiTests */ = {isa = PBXFileSystemSynchronizedRootGroup; path = LumiTests; sourceTree = "<group>"; };
+		A10000000000000000000701 /* Lumi */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Lumi;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000702 /* LumiTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = LumiTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -274,6 +282,7 @@
 				CODE_SIGN_ENTITLEMENTS = Config/Lumi.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 64RG8MNN4J;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Config/Info.plist;
@@ -308,6 +317,7 @@
 				CODE_SIGN_ENTITLEMENTS = Config/Lumi.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 64RG8MNN4J;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Config/Info.plist;

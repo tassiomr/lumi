@@ -1,18 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#2F6BFF"/>
-      <stop offset="1" stop-color="#8B5CF6"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="0.5" cy="0.42" r="0.5">
-      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.95"/>
-      <stop offset="0.55" stop-color="#FFFFFF" stop-opacity="0.25"/>
-      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
-    </radialGradient>
+    <radialGradient id="bg" cx="0.5" cy="0.5" r="0.72"><stop stop-color="#1E2029"/><stop offset="1" stop-color="#08090C"/></radialGradient>
+    <linearGradient id="light" gradientUnits="userSpaceOnUse" x1="262" y1="180" x2="762" y2="860"><stop offset="0" stop-color="#FFFAF2"/><stop offset="0.25" stop-color="#E2D6FF"/><stop offset="0.55" stop-color="#A086EC"/><stop offset="0.8" stop-color="#6096E8"/><stop offset="1" stop-color="#4078D6"/></linearGradient>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#B9A6F2"/><stop offset="1" stop-color="#7AA6EE"/></linearGradient>
+    <radialGradient id="core" cx="0.4" cy="0.38" r="0.6"><stop offset="0" stop-color="#FFFBF4" stop-opacity="0.9"/><stop offset="1" stop-color="#FFFBF4" stop-opacity="0"/></radialGradient>
+    <filter id="halo" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="80"/></filter>
+    <radialGradient id="spark"><stop stop-color="#FFFBF4"/><stop offset="0.12" stop-color="#FFFBF4" stop-opacity="0.75"/><stop offset="0.4" stop-color="#FFFBF4" stop-opacity="0.18"/><stop offset="1" stop-color="#FFFBF4" stop-opacity="0"/></radialGradient>
+    
   </defs>
-  <rect width="64" height="64" fill="url(#bg)"/>
-  <circle cx="32" cy="27" r="20" fill="url(#glow)"/>
-  <path d="M32 14a12 12 0 0 0-7 21.75c1.25.9 2 2.3 2 3.85V41h10v-1.4c0-1.55.75-2.95 2-3.85A12 12 0 0 0 32 14Z" fill="#FFFFFF"/>
-  <rect x="27" y="44" width="10" height="3.2" rx="1.6" fill="#FFFFFF" fill-opacity="0.85"/>
-  <rect x="28.5" y="49" width="7" height="3.2" rx="1.6" fill="#FFFFFF" fill-opacity="0.6"/>
+  <g>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <circle cx="512" cy="424" r="262" fill="url(#light)" filter="url(#halo)" opacity="0.65"/>
+  <circle cx="512" cy="424" r="244" fill="url(#light)"/>
+  <circle cx="512" cy="424" r="244" fill="url(#core)"/>
+  <rect x="398" y="712" width="228" height="60" rx="30" fill="url(#base)"/>
+  <rect x="436" y="796" width="152" height="60" rx="30" fill="url(#base)" opacity="0.75"/>
+  <circle cx="685" cy="251" r="110" fill="url(#spark)"/>
+  <circle cx="685" cy="251" r="13" fill="#FFFBF4"/>
+  </g>
 </svg>
