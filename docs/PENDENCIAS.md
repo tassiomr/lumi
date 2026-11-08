@@ -22,6 +22,8 @@ Contexto: quando o site foi criado, **o projeto iOS do Lumi não existia nesta p
 
 Se no futuro entrar outro SDK (analytics, crash reporting, anúncios) ou um servidor próprio, atualize a Política, o App Privacy e `hasTrMediaBackend` **antes** de publicar a versão do app.
 
+**Em avaliação (2026-11-08): Lumi Bridge no Mac** para levar lâmpadas Tuya/Elgin ao Apple Home (veja `docs/integracao/02-arquitetura.md`). Se for adotada, o Lumi deixa de ser "só um app local com SDK Tuya". Antes de publicar qualquer menção à bridge, é preciso revisar a Política de Privacidade (novo componente no Mac, local keys no Keychain, projeto Tuya do próprio usuário), os Termos, a Compatibilidade e `lib/capabilities.ts`. Também não se pode anunciar certificação Apple Home, Matter ou Tuya.
+
 ## 2. Funcionalidades a confirmar (bloqueante)
 
 Em `apps/website/lib/capabilities.ts`, mude cada item `unconfirmed` para `available` (implementado e testado) ou `planned` (o site passa a mostrar "Em breve"):
