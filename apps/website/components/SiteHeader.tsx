@@ -9,12 +9,12 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-line bg-bg/75 backdrop-blur-xl backdrop-saturate-150">
       <a
         href="#conteudo"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-md focus:bg-elevated focus:px-3 focus:py-2"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-small focus:bg-elevated focus:px-3 focus:py-2"
       >
         Pular para o conteúdo
       </a>
       <Container className="flex h-14 items-center justify-between">
-        <Link href="/" aria-label="Lumi — página inicial" className="rounded-md">
+        <Link href="/" aria-label="Lumi — página inicial" className="rounded-small">
           <LumiWordmark size={26} />
         </Link>
 
@@ -47,14 +47,14 @@ export function SiteHeader() {
           <CloseOnNavigate>
           <nav
             aria-label="Principal (móvel)"
-            className="absolute right-0 top-12 w-56 rounded-2xl border border-line bg-elevated p-2 shadow-xl shadow-black/10"
+            className="absolute right-0 top-12 w-56 rounded-card border border-line bg-elevated p-2 shadow-xl shadow-black/10"
           >
             {mainNav.map((item) => (
-              <Link key={item.href} href={item.href} className="block rounded-lg px-3 py-2.5 text-sm hover:bg-fg/5">
+              <Link key={item.href} href={item.href} className="block rounded-control px-3 py-2.5 text-sm hover:bg-fg/5">
                 {item.label}
               </Link>
             ))}
-            <Link href="/#download" className="mt-1 block rounded-lg bg-fg px-3 py-2.5 text-sm font-medium text-bg">
+            <Link href="/#download" className="mt-1 block rounded-control bg-fg px-3 py-2.5 text-sm font-medium text-bg">
               Download
             </Link>
           </nav>

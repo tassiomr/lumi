@@ -9,7 +9,7 @@ export function ContactEmail({ kind, subject }: { kind: Kind; subject: string })
     return <Pending>{kind === "privacy" ? "e-mail de privacidade" : "e-mail de suporte"}</Pending>;
   }
   return (
-    <a href={mailto(email, subject)} className="font-medium text-electric-500 underline underline-offset-4">
+    <a href={mailto(email, subject)} className="font-medium text-accent underline underline-offset-4">
       {email}
     </a>
   );
@@ -28,7 +28,7 @@ export function ContactCard({
 }) {
   const email = kind === "privacy" ? site.privacyEmail : site.supportEmail;
   return (
-    <div className="rounded-3xl border border-line bg-elevated p-6 sm:p-8">
+    <div className="rounded-card border border-line bg-elevated p-6 sm:p-8">
       <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
       <div className="mt-2 text-muted">{children}</div>
       <div className="mt-5 flex flex-wrap items-center gap-3">

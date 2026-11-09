@@ -80,7 +80,7 @@ export default function HomePage() {
       <section id="funcionalidades" aria-labelledby="funcionalidades-titulo" className="scroll-mt-20 py-20 sm:py-28">
         <Container>
           <div className="max-w-2xl">
-            <p className="text-sm font-medium text-electric-500">Funcionalidades</p>
+            <p className="text-sm font-medium text-accent">Funcionalidades</p>
             <h2 id="funcionalidades-titulo" className="mt-2 text-3xl font-semibold tracking-tight sm:text-5xl">
               Luz certa, sem complicação.
             </h2>
@@ -97,7 +97,7 @@ export default function HomePage() {
       {/* Integrações */}
       <section aria-labelledby="integracoes-titulo" className="py-8 sm:py-12">
         <Container>
-          <div className="reveal overflow-hidden rounded-[2rem] border border-line bg-elevated">
+          <div className="reveal overflow-hidden rounded-sheet border border-line bg-elevated">
             <div className="grid gap-px bg-line md:grid-cols-2">
               <div className="bg-elevated p-8 sm:p-10">
                 <div className="flex items-center justify-between">
@@ -122,7 +122,7 @@ export default function HomePage() {
                   os comandos passam pelos serviços da Tuya; a disponibilidade depende deles.
                 </p>
                 <p className="mt-3 text-sm">
-                  <Link href={routes.compatibility} className="font-medium text-electric-500 hover:underline">
+                  <Link href={routes.compatibility} className="font-medium text-accent hover:underline">
                     Ver compatibilidade →
                   </Link>
                 </p>
@@ -140,21 +140,21 @@ export default function HomePage() {
           </h2>
           <ul className="reveal space-y-4 text-muted">
             <li className="flex gap-3">
-              <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-electric-500" />
+              <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
               Sem anúncios e sem rastreamento entre apps.
             </li>
             {!hasTrMediaBackend ? (
               <li className="flex gap-3">
-                <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-electric-500" />
+                <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
                 A {site.developer} não mantém servidores que recebam os dados da sua casa. Os dados do HomeKit ficam com a
                 Apple; os da conta Tuya são tratados pela Tuya.
               </li>
             ) : null}
             <li className="flex gap-3">
-              <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-electric-500" />
+              <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
               <span>
                 Explicamos com clareza o que é tratado, por quem e como remover.{" "}
-                <Link href={routes.privacy} className="font-medium text-electric-500 hover:underline">
+                <Link href={routes.privacy} className="font-medium text-accent hover:underline">
                   Política de Privacidade
                 </Link>
               </span>
@@ -166,17 +166,17 @@ export default function HomePage() {
       {/* Download */}
       <section id="download" aria-labelledby="download-titulo" className="scroll-mt-20">
         <Container>
-          <div className="reveal relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-electric-600 to-violet-600 px-6 py-16 text-center text-white sm:px-12">
-            <div aria-hidden="true" className="absolute left-1/2 top-0 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/30 blur-3xl" />
+          <div className="reveal relative overflow-hidden rounded-sheet bg-gradient-to-br from-primary to-highlight px-6 py-16 text-center text-on-primary sm:px-12">
+            <div aria-hidden="true" className="absolute left-1/2 top-0 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-on-primary/30 blur-3xl" />
             <div className="relative">
-              <LumiMark size={64} className="mx-auto rounded-2xl shadow-2xl shadow-black/30" />
+              <LumiMark size={64} className="mx-auto rounded-card shadow-2xl shadow-black/30" />
               <h2 id="download-titulo" className="mt-6 text-3xl font-semibold tracking-tight sm:text-4xl">
                 Acenda o Lumi no seu iPhone.
               </h2>
-              <p className="mx-auto mt-3 max-w-md text-white/80">
+              <p className="mx-auto mt-3 max-w-md text-on-primary/80">
                 {site.appStoreUrl ? "Disponível na App Store." : "Em breve na App Store."}
               </p>
-              <div className="mt-8 flex justify-center [&_a]:bg-white [&_a]:text-zinc-950 [&>span>span]:border-white/30">
+              <div className="mt-8 flex justify-center [&_a]:bg-bg [&_a]:text-fg [&>span>span]:border-on-primary/30">
                 <AppStoreButton />
               </div>
             </div>

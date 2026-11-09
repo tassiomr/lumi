@@ -23,7 +23,7 @@ export function AppStoreButton({ locale = "pt" }: { locale?: "pt" | "en" }) {
     </>
   );
 
-  const base = "inline-flex items-center gap-3 rounded-2xl px-5 py-3 transition";
+  const base = "inline-flex items-center gap-3 rounded-card px-5 py-3 transition";
 
   if (!site.appStoreUrl) {
     return (
@@ -36,7 +36,7 @@ export function AppStoreButton({ locale = "pt" }: { locale?: "pt" | "en" }) {
   return (
     <a
       href={site.appStoreUrl}
-      className={`${base} bg-fg text-bg shadow-lg shadow-electric-500/20 hover:-translate-y-0.5 hover:shadow-electric-500/30`}
+      className={`${base} bg-fg text-bg shadow-lg shadow-primary/20 hover:-translate-y-0.5 hover:shadow-primary/30`}
       rel="noopener"
     >
       {inner(t.available)}

@@ -15,10 +15,10 @@ export const metadata = pageMetadata({
 });
 
 const statusStyle: Record<CompatStatus, string> = {
-  tested: "bg-emerald-500/12 text-emerald-700 dark:text-emerald-300",
-  partial: "bg-amber-500/12 text-amber-700 dark:text-amber-300",
-  untested: "bg-zinc-500/12 text-zinc-600 dark:text-zinc-300",
-  unsupported: "bg-rose-500/12 text-rose-700 dark:text-rose-300",
+  tested: "bg-success-subtle text-success",
+  partial: "bg-warning-subtle text-warning",
+  untested: "bg-tertiary text-muted",
+  unsupported: "bg-error-subtle text-error",
 };
 
 function StatusPill({ status }: { status: CompatStatus }) {
@@ -31,10 +31,10 @@ function StatusPill({ status }: { status: CompatStatus }) {
 
 function DeviceTable({ devices, empty }: { devices: TestedDevice[]; empty: string }) {
   if (devices.length === 0) {
-    return <p className="mt-4 rounded-2xl border border-dashed border-line p-5 text-sm text-muted">{empty}</p>;
+    return <p className="mt-4 rounded-card border border-dashed border-line p-5 text-sm text-muted">{empty}</p>;
   }
   return (
-    <div className="mt-4 overflow-x-auto rounded-2xl border border-line">
+    <div className="mt-4 overflow-x-auto rounded-card border border-line">
       <table className="w-full text-left text-sm">
         <thead className="bg-fg/[0.03]">
           <tr>
@@ -81,7 +81,7 @@ function Integration({
   empty: string;
 }) {
   return (
-    <section id={id} aria-labelledby={`${id}-t`} className="scroll-mt-24 rounded-3xl border border-line bg-elevated p-6 sm:p-8">
+    <section id={id} aria-labelledby={`${id}-t`} className="scroll-mt-24 rounded-card border border-line bg-elevated p-6 sm:p-8">
       <div className="flex flex-wrap items-center gap-3">
         <h2 id={`${id}-t`} className="text-2xl font-semibold tracking-tight">{title}</h2>
         <CapabilityBadge id={capability} />
@@ -97,7 +97,7 @@ export default function CompatibilityPage() {
   return (
     <Container className="pt-14 sm:pt-20">
       <div className="max-w-3xl">
-        <p className="text-sm font-medium text-electric-500">Compatibilidade</p>
+        <p className="text-sm font-medium text-accent">Compatibilidade</p>
         <h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">O que funciona com o Lumi</h1>
         <p className="mt-4 text-lg text-muted">
           O {site.name} controla dispositivos por meio de integrações. A compatibilidade depende da integração, do modelo e
@@ -109,7 +109,7 @@ export default function CompatibilityPage() {
         <h2 id="legenda" className="sr-only">Legenda</h2>
         <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {(Object.keys(compatStatusInfo) as CompatStatus[]).map((s) => (
-            <div key={s} className="rounded-2xl border border-line p-4">
+            <div key={s} className="rounded-card border border-line p-4">
               <dt><StatusPill status={s} /></dt>
               <dd className="mt-2 text-sm text-muted">{compatStatusInfo[s].description}</dd>
             </div>
@@ -175,7 +175,7 @@ export default function CompatibilityPage() {
 
       <p className="mt-10 max-w-3xl text-muted">
         Testou um dispositivo que não está na lista?{" "}
-        <Link href={`${routes.support}#contato`} className="font-medium text-electric-500 hover:underline">
+        <Link href={`${routes.support}#contato`} className="font-medium text-accent hover:underline">
           Conte para o suporte
         </Link>{" "}
         — incluindo marca, modelo e integração.

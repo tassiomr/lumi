@@ -1,45 +1,63 @@
 @import "tailwindcss";
+/* Tokens do TR Design System, copiados de TRDesignSystem/build/web/tr-tokens.css. Não editar à mão. */
+@import "./tr-tokens.css";
 
-@theme {
-  --color-electric-400: #4d8dff;
-  --color-electric-500: #2f6bff;
-  --color-electric-600: #1f50e6;
-  --color-violet-400: #a47bff;
-  --color-violet-500: #8b5cf6;
-  --color-violet-600: #7039e8;
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-}
+/*
+ * Tema e modo ficam no <html>: data-tr-theme (identidade única dos apps) e data-tr-mode
+ * (light, dark, lightHighContrast, darkHighContrast), definido antes da pintura em app/layout.tsx.
+ */
 
+/*
+ * Pilhas de fonte do DS. O tr-tokens.css ainda não exporta fontes: estes valores espelham
+ * FAMILIES em TRDesignSystem/Scripts/build_site.py (tema Luminous Studio: SF Pro, títulos expanded, números mono).
+ */
 :root {
-  --bg: #fbfbfd;
-  --bg-elevated: #ffffff;
-  --fg: #0b0c10;
-  --fg-muted: #565a66;
-  --border: rgb(11 12 16 / 0.09);
-  --glow-a: rgb(47 107 255 / 0.18);
-  --glow-b: rgb(139 92 246 / 0.16);
-  color-scheme: light;
+  --tr-font-sans: "SF Pro Text", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --tr-font-display: "SF Pro Display", "SF Pro", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --tr-font-numeric: "SF Mono", ui-monospace, Menlo, monospace;
+  --tr-display-width: expanded;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #07080c;
-    --bg-elevated: #10121a;
-    --fg: #f4f5f8;
-    --fg-muted: #a1a6b4;
-    --border: rgb(255 255 255 / 0.09);
-    --glow-a: rgb(47 107 255 / 0.28);
-    --glow-b: rgb(139 92 246 / 0.24);
-    color-scheme: dark;
-  }
-}
+[data-tr-mode="light"], [data-tr-mode="lightHighContrast"] { color-scheme: light; }
+[data-tr-mode="dark"], [data-tr-mode="darkHighContrast"] { color-scheme: dark; }
 
+/* Utilitários do Tailwind ligados aos tokens semânticos do DS. */
 @theme inline {
-  --color-bg: var(--bg);
-  --color-elevated: var(--bg-elevated);
-  --color-fg: var(--fg);
-  --color-muted: var(--fg-muted);
-  --color-line: var(--border);
+  --color-bg: var(--tr-background-primary);
+  --color-surface: var(--tr-background-secondary);
+  --color-tertiary: var(--tr-background-tertiary);
+  --color-elevated: var(--tr-surface-raised);
+  --color-selected: var(--tr-surface-selected);
+  --color-fg: var(--tr-foreground-primary);
+  --color-muted: var(--tr-foreground-secondary);
+  --color-inverse: var(--tr-background-inverse);
+  --color-on-inverse: var(--tr-foreground-inverse);
+  --color-accent: var(--tr-foreground-accent);
+  --color-primary: var(--tr-action-primary);
+  --color-on-primary: var(--tr-action-onPrimary);
+  --color-highlight: var(--tr-action-accent);
+  --color-on-highlight: var(--tr-action-onAccent);
+  --color-success: var(--tr-feedback-success);
+  --color-success-subtle: var(--tr-feedback-successSubtle);
+  --color-error: var(--tr-feedback-error);
+  --color-error-subtle: var(--tr-feedback-errorSubtle);
+  --color-warning: var(--tr-feedback-warning);
+  --color-warning-subtle: var(--tr-feedback-warningSubtle);
+  --color-info: var(--tr-feedback-info);
+  --color-info-subtle: var(--tr-feedback-infoSubtle);
+  --color-line: var(--tr-border-default);
+  --color-line-subtle: var(--tr-border-subtle);
+  --color-focus: var(--tr-border-focus);
+  --color-glow: var(--tr-custom-glow, var(--tr-action-accent));
+
+  --radius-small: var(--tr-shape-small);
+  --radius-control: var(--tr-shape-control);
+  --radius-card: var(--tr-shape-card);
+  --radius-sheet: var(--tr-shape-sheet);
+
+  --font-sans: var(--tr-font-sans);
+  --font-display: var(--tr-font-display);
+  --font-mono: var(--tr-font-numeric);
 }
 
 html {
@@ -48,21 +66,26 @@ html {
 }
 
 body {
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--font-sans);
+  background: var(--tr-background-primary);
+  color: var(--tr-foreground-primary);
+  font-family: var(--tr-font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
+h1, h2 {
+  font-family: var(--tr-font-display);
+  font-stretch: var(--tr-display-width);
+}
+
 :focus-visible {
-  outline: 2px solid var(--color-electric-500);
+  outline: 2px solid var(--tr-border-focus);
   outline-offset: 3px;
-  border-radius: 6px;
+  border-radius: var(--tr-shape-small);
 }
 
 .text-gradient {
-  background: linear-gradient(100deg, var(--color-electric-500), var(--color-violet-500));
+  background: linear-gradient(100deg, var(--tr-action-primary), var(--tr-action-accent));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -70,8 +93,8 @@ body {
 
 .glow-backdrop {
   background:
-    radial-gradient(40rem 26rem at 20% 0%, var(--glow-a), transparent 70%),
-    radial-gradient(36rem 24rem at 85% 10%, var(--glow-b), transparent 70%);
+    radial-gradient(40rem 26rem at 20% 0%, color-mix(in srgb, var(--tr-action-primary) 20%, transparent), transparent 70%),
+    radial-gradient(36rem 24rem at 85% 10%, var(--color-glow), transparent 70%);
 }
 
 /* Revelação suave ao rolar, sem JavaScript, onde o navegador suporta scroll-driven animations. */
@@ -115,15 +138,15 @@ body {
   margin-top: 1.75rem;
   margin-bottom: 0.5rem;
 }
-.prose-legal p, .prose-legal li { color: var(--fg-muted); line-height: 1.7; }
+.prose-legal p, .prose-legal li { color: var(--tr-foreground-secondary); line-height: 1.7; }
 .prose-legal p + p { margin-top: 0.9rem; }
 .prose-legal ul, .prose-legal ol { margin: 0.75rem 0; padding-left: 1.25rem; }
 .prose-legal ul { list-style: disc; }
 .prose-legal ol { list-style: decimal; }
 .prose-legal li + li { margin-top: 0.4rem; }
-.prose-legal strong { color: var(--fg); font-weight: 600; }
-.prose-legal a { color: var(--color-electric-500); text-decoration: underline; text-underline-offset: 3px; }
+.prose-legal strong { color: var(--tr-foreground-primary); font-weight: 600; }
+.prose-legal a { color: var(--tr-foreground-accent); text-decoration: underline; text-underline-offset: 3px; }
 .prose-legal table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.925rem; }
-.prose-legal th, .prose-legal td { text-align: left; vertical-align: top; padding: 0.65rem 0.75rem; border-bottom: 1px solid var(--border); }
-.prose-legal th { color: var(--fg); font-weight: 600; }
-.prose-legal td { color: var(--fg-muted); }
+.prose-legal th, .prose-legal td { text-align: left; vertical-align: top; padding: 0.65rem 0.75rem; border-bottom: 1px solid var(--tr-border-subtle); }
+.prose-legal th { color: var(--tr-foreground-primary); font-weight: 600; }
+.prose-legal td { color: var(--tr-foreground-secondary); }

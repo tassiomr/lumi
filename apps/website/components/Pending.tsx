@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
  */
 export function Pending({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-md border border-amber-500/40 bg-amber-500/10 px-2 py-0.5 text-[0.85em] font-medium text-amber-700 dark:text-amber-300">
+    <span className="inline-flex items-center gap-1.5 rounded-small border border-warning/40 bg-warning-subtle px-2 py-0.5 text-[0.85em] font-medium text-warning">
       <span aria-hidden="true">⚠</span>
       <span>Pendente: {children}</span>
     </span>

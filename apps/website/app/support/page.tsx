@@ -115,7 +115,7 @@ const guides: Guide[] = [
       <>Sem uma permissão, as funções que dependem dela deixam de funcionar até você reativá-la.</>,
     ],
     note: (
-      <Link href={routes.privacyChoices} className="text-sm font-medium text-electric-500 hover:underline">
+      <Link href={routes.privacyChoices} className="text-sm font-medium text-accent hover:underline">
         Mais em Preferências de Privacidade →
       </Link>
     ),
@@ -126,7 +126,7 @@ export default function SupportPage() {
   return (
     <Container className="pt-14 sm:pt-20">
       <div className="max-w-3xl">
-        <p className="text-sm font-medium text-electric-500">Central de suporte</p>
+        <p className="text-sm font-medium text-accent">Central de suporte</p>
         <h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">Como podemos ajudar?</h1>
         <p className="mt-4 text-lg text-muted">
           Guias rápidos para começar a usar o {site.name}, respostas para dúvidas comuns e um canal direto com a{" "}
@@ -136,26 +136,26 @@ export default function SupportPage() {
 
       <nav aria-label="Guias" className="mt-10 flex flex-wrap gap-2">
         {guides.map((g) => (
-          <a key={g.id} href={`#${g.id}`} className="rounded-full border border-line px-3.5 py-1.5 text-sm text-muted hover:border-electric-500 hover:text-fg">
+          <a key={g.id} href={`#${g.id}`} className="rounded-full border border-line px-3.5 py-1.5 text-sm text-muted hover:border-primary hover:text-fg">
             {g.title}
           </a>
         ))}
-        <a href="#faq" className="rounded-full border border-line px-3.5 py-1.5 text-sm text-muted hover:border-electric-500 hover:text-fg">
+        <a href="#faq" className="rounded-full border border-line px-3.5 py-1.5 text-sm text-muted hover:border-primary hover:text-fg">
           Perguntas frequentes
         </a>
-        <a href="#contato" className="rounded-full border border-line px-3.5 py-1.5 text-sm text-muted hover:border-electric-500 hover:text-fg">
+        <a href="#contato" className="rounded-full border border-line px-3.5 py-1.5 text-sm text-muted hover:border-primary hover:text-fg">
           Contato
         </a>
       </nav>
 
       <section aria-label="Guias" className="mt-12 grid gap-4 md:grid-cols-2">
         {guides.map((g) => (
-          <article key={g.id} id={g.id} className="scroll-mt-24 rounded-3xl border border-line bg-elevated p-6 sm:p-7">
+          <article key={g.id} id={g.id} className="scroll-mt-24 rounded-card border border-line bg-elevated p-6 sm:p-7">
             <h2 className="text-lg font-semibold tracking-tight">{g.title}</h2>
             <ol className="mt-4 space-y-2.5 text-muted">
               {g.steps.map((step, i) => (
                 <li key={i} className="flex gap-3 leading-relaxed">
-                  <span aria-hidden="true" className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-electric-500/12 text-xs font-semibold text-electric-500">
+                  <span aria-hidden="true" className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-selected text-xs font-semibold text-accent">
                     {i + 1}
                   </span>
                   <span>{step}</span>

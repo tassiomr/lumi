@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/lib/site";
+import { trToken } from "@/lib/tr-tokens";
 
 export const dynamic = "force-static";
 
@@ -10,8 +11,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: site.description,
     start_url: "/",
     display: "browser",
-    background_color: "#07080c",
-    theme_color: "#2f6bff",
+    background_color: trToken("background-primary", "dark"),
+    theme_color: trToken("action-primary"),
     lang: "pt-BR",
     icons: [
       { src: "/icon.svg", type: "image/svg+xml", sizes: "any" },

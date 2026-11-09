@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { site } from "@/lib/site";
+import { trModeScript, trTheme } from "@/lib/tr-theme";
+import { trToken } from "@/lib/tr-tokens";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -30,8 +32,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fbfbfd" },
-    { media: "(prefers-color-scheme: dark)", color: "#07080c" },
+    { media: "(prefers-color-scheme: light)", color: trToken("background-primary", "light") },
+    { media: "(prefers-color-scheme: dark)", color: trToken("background-primary", "dark") },
   ],
   width: "device-width",
   initialScale: 1,
@@ -39,7 +41,10 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" data-tr-theme={trTheme} data-tr-mode="light" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: trModeScript }} />
+      </head>
       <body className="min-h-dvh">
         <SiteHeader />
         <main id="conteudo">{children}</main>

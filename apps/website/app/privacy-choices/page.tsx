@@ -46,7 +46,7 @@ const inDevice: Choice[] = [
     body: (
       <>
         Remove a conta do Lumi e os dados dela na Tuya.{" "}
-        <Link href={routes.deleteAccount} className="text-electric-500 hover:underline">Detalhes</Link>
+        <Link href={routes.deleteAccount} className="text-accent hover:underline">Detalhes</Link>
       </>
     ),
   },
@@ -65,7 +65,7 @@ export default function PrivacyChoicesPage() {
   return (
     <Container className="pt-14 sm:pt-20">
       <div className="max-w-3xl">
-        <p className="text-sm font-medium text-electric-500">Privacidade</p>
+        <p className="text-sm font-medium text-accent">Privacidade</p>
         <h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">Preferências de Privacidade</h1>
         <p className="mt-4 text-lg text-muted">
           A maior parte dos seus dados no {site.name} é controlada diretamente no iPhone. Veja onde ajustar cada coisa e
@@ -78,9 +78,9 @@ export default function PrivacyChoicesPage() {
         <h2 id="no-iphone" className="text-2xl font-semibold tracking-tight">No seu iPhone</h2>
         <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {inDevice.map((c) => (
-            <li key={c.title} className="rounded-3xl border border-line bg-elevated p-6">
+            <li key={c.title} className="rounded-card border border-line bg-elevated p-6">
               <h3 className="font-semibold">{c.title}</h3>
-              <p className="mt-1 text-sm font-medium text-electric-500">{c.where}</p>
+              <p className="mt-1 text-sm font-medium text-accent">{c.where}</p>
               <p className="mt-3 text-sm leading-relaxed text-muted">{c.body}</p>
             </li>
           ))}
@@ -106,7 +106,7 @@ export default function PrivacyChoicesPage() {
           <ContactCard kind="privacy" subject="LGPD — Solicitação de titular" title="Enviar uma solicitação">
             <p>
               A solicitação é enviada pelo seu app de e-mail. Não há formulário neste site, e ele não coleta nenhum dado.
-              Detalhes em <Link href={routes.privacy} className="text-electric-500 hover:underline">Política de Privacidade</Link>.
+              Detalhes em <Link href={routes.privacy} className="text-accent hover:underline">Política de Privacidade</Link>.
             </p>
           </ContactCard>
         </div>

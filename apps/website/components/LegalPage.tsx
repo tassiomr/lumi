@@ -10,7 +10,7 @@ export function DraftNotice() {
   return (
     <div
       role="note"
-      className="mt-6 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-800 dark:text-amber-200"
+      className="mt-6 rounded-card border border-warning/40 bg-warning-subtle p-4 text-sm text-warning"
     >
       <strong className="font-semibold">Rascunho em revisão.</strong> Este documento descreve o funcionamento
       previsto do Lumi e ainda precisa ser confirmado pela {site.developer} contra a versão publicada do aplicativo.
@@ -39,7 +39,7 @@ export function LegalPage({
   return (
     <Container className="pt-14 sm:pt-20">
       <div className="max-w-3xl">
-        {eyebrow ? <p className="text-sm font-medium text-electric-500">{eyebrow}</p> : null}
+        {eyebrow ? <p className="text-sm font-medium text-accent">{eyebrow}</p> : null}
         <h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">{title}</h1>
         <div className="mt-4 text-lg text-muted">{intro}</div>
         {version && updated ? (
@@ -58,7 +58,7 @@ export function LegalPage({
               <ol className="mt-3 space-y-2 border-l border-line text-sm">
                 {toc.map((item) => (
                   <li key={item.id}>
-                    <a href={`#${item.id}`} className="-ml-px block border-l border-transparent pl-3 text-muted hover:border-electric-500 hover:text-fg">
+                    <a href={`#${item.id}`} className="-ml-px block border-l border-transparent pl-3 text-muted hover:border-primary hover:text-fg">
                       {item.title}
                     </a>
                   </li>

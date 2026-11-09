@@ -64,11 +64,11 @@ export default function EnglishHome() {
             {features.map((f) => {
               const badge = enStatus[capabilities[f.capability].status];
               return (
-                <li key={f.title} className="rounded-3xl border border-line bg-elevated p-6">
+                <li key={f.title} className="rounded-card border border-line bg-elevated p-6">
                   <div className="flex items-center justify-between gap-3">
                     <h3 className="text-lg font-semibold">{f.title}</h3>
                     {badge ? (
-                      <span className="rounded-full bg-violet-500/12 px-2.5 py-0.5 text-xs font-medium text-violet-600 dark:text-violet-300">
+                      <span className="rounded-full bg-info-subtle px-2.5 py-0.5 text-xs font-medium text-info">
                         {badge}
                       </span>
                     ) : null}
@@ -83,7 +83,7 @@ export default function EnglishHome() {
 
       <section aria-labelledby="legal-en">
         <Container>
-          <div className="rounded-3xl border border-line bg-elevated p-6 sm:p-8">
+          <div className="rounded-card border border-line bg-elevated p-6 sm:p-8">
             <h2 id="legal-en" className="text-xl font-semibold">Support & legal</h2>
             <p className="mt-2 text-muted">
               Our support center and legal documents are currently available in Brazilian Portuguese.
@@ -91,7 +91,7 @@ export default function EnglishHome() {
             <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm">
               {[{ label: "Suporte (Support)", href: routes.support }, ...legalNav].map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} hrefLang="pt-BR" className="font-medium text-electric-500 hover:underline">
+                  <Link href={l.href} hrefLang="pt-BR" className="font-medium text-accent hover:underline">
                     {l.label}
                   </Link>
                 </li>

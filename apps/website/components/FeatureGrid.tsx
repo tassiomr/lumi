@@ -21,11 +21,11 @@ export function FeatureGrid({ features }: { features: Feature[] }) {
   return (
     <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {features.map((f) => (
-        <li key={f.title} className="reveal group relative overflow-hidden rounded-3xl border border-line bg-elevated p-6 sm:p-7">
-          <div aria-hidden="true" className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-br from-electric-500/15 to-violet-500/15 blur-2xl transition-opacity group-hover:opacity-100 sm:opacity-60" />
+        <li key={f.title} className="reveal group relative overflow-hidden rounded-card border border-line bg-elevated p-6 sm:p-7">
+          <div aria-hidden="true" className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-br from-primary/15 to-highlight/15 blur-2xl transition-opacity group-hover:opacity-100 sm:opacity-60" />
           <div className="relative">
             <div className="flex items-center justify-between gap-3">
-              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-electric-500 to-violet-500 text-white">
+              <span className="flex h-11 w-11 items-center justify-center rounded-card bg-gradient-to-br from-primary to-highlight text-on-primary">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   {icons[f.icon]}
                 </svg>
