@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A10000000000000000000301 /* LumiLegal in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000401 /* LumiLegal */; };
+		A10000000000000000000302 /* TRDesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000402 /* TRDesignSystem */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A10000000000000000000301 /* LumiLegal in Frameworks */,
+				A10000000000000000000302 /* TRDesignSystem in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,6 +112,7 @@
 			name = Lumi;
 			packageProductDependencies = (
 				A10000000000000000000401 /* LumiLegal */,
+				A10000000000000000000402 /* TRDesignSystem */,
 			);
 			productName = Lumi;
 			productReference = A10000000000000000000601 /* Lumi.app */;
@@ -167,6 +170,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				A10000000000000000001301 /* XCLocalSwiftPackageReference "LumiLegal" */,
+				A10000000000000000001302 /* XCRemoteSwiftPackageReference "TRDesignSystem" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A10000000000000000000902 /* Products */;
@@ -278,7 +282,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Config/Lumi.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -313,7 +316,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Config/Lumi.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -419,10 +421,26 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		A10000000000000000001302 /* XCRemoteSwiftPackageReference "TRDesignSystem" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tassiomr/TRDesignSystem.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		A10000000000000000000401 /* LumiLegal */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LumiLegal;
+		};
+		A10000000000000000000402 /* TRDesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A10000000000000000001302 /* XCRemoteSwiftPackageReference "TRDesignSystem" */;
+			productName = TRDesignSystem;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

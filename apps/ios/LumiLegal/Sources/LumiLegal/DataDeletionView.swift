@@ -1,4 +1,5 @@
 import SwiftUI
+import TRDesignSystem
 
 /// Tela "Exclusão de Conta e Dados": ações executadas dentro do app + instruções e link para o site.
 public struct DataDeletionView: View {
@@ -6,6 +7,7 @@ public struct DataDeletionView: View {
     let account: (any LumiAccountDeleting)?
     let localData: (any LumiLocalDataErasing)?
 
+    @Environment(\.trTheme) private var theme
     @State private var confirming: Action?
     @State private var working = false
     @State private var resultMessage: String?
@@ -29,6 +31,7 @@ public struct DataDeletionView: View {
                 } footer: {
                     Text("Remove cenas, ambientes, favoritos e preferências salvos neste iPhone. Suas lâmpadas Tuya continuam conectadas, e os dados do app Casa não são alterados.")
                 }
+                .listRowBackground(Rectangle().fill(theme.colors.surface.raised))
             }
 
             if let account, account.hasAccount {
@@ -37,6 +40,7 @@ public struct DataDeletionView: View {
                 } footer: {
                     Text("Exclui a conta anônima do Lumi e as lâmpadas vinculadas a ela na nuvem da Tuya. Depois disso, as lâmpadas precisam ser resetadas e pareadas de novo. Contas Smart Life ou Tuya Smart não são afetadas.")
                 }
+                .listRowBackground(Rectangle().fill(theme.colors.surface.raised))
             }
 
             homeKitSection
@@ -47,8 +51,11 @@ public struct DataDeletionView: View {
                         Label("Detalhes no site", systemImage: "safari")
                     }
                 }
+                .listRowBackground(Rectangle().fill(theme.colors.surface.raised))
             }
         }
+        .scrollContentBackground(.hidden)
+        .background(theme.colors.background.secondary)
         .navigationTitle(LumiPage.deleteAccount.title)
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
@@ -90,6 +97,7 @@ public struct DataDeletionView: View {
         } footer: {
             Text("Desativar o acesso remove a permissão do Lumi. Sua casa e seus acessórios continuam no app Casa.")
         }
+        .listRowBackground(Rectangle().fill(theme.colors.surface.raised))
     }
 
     /// Abre Ajustes › Lumi, onde ficam as permissões de Dados da Casa, Rede Local, Bluetooth e Localização.

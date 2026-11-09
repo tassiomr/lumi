@@ -1,4 +1,5 @@
 import SwiftUI
+import TRDesignSystem
 
 @main
 struct LumiApp: App {
@@ -9,7 +10,8 @@ struct LumiApp: App {
             RootView()
                 .environment(model)
                 .environment(model.store)
-                .tint(Theme.accent)
+                // Identidade única de todos os apps da TR Media.
+                .trTheme(.luminousStudio)
                 .task { await model.store.start() }
         }
     }

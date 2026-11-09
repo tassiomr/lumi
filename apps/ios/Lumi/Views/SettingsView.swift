@@ -1,9 +1,11 @@
 import LumiLegal
 import SwiftUI
+import TRDesignSystem
 
 struct SettingsView: View {
     @Environment(AppModel.self) private var model
     @Environment(LightStore.self) private var store
+    @Environment(\.trTheme) private var theme
     @State private var addingDevice = false
 
     var body: some View {
@@ -14,16 +16,18 @@ struct SettingsView: View {
                         IntegrationRow(provider: provider)
                     }
                     if model.tuya.isConfigured {
-                        Button { addingDevice = true } label: { Label("Adicionar lâmpada Tuya", systemImage: "plus.circle") }
+                        Button { addingDevice = true } label: { Label("Adicionar lâmpada Tuya", trIcon: .addCircle) }
                     }
                 } header: {
                     Text("Integrações")
                 } footer: {
                     Text("Lâmpadas do HomeKit e Matter são adicionadas pelo app Casa. Lâmpadas Tuya são pareadas aqui no Lumi, sem e-mail nem senha.")
                 }
+                .listRowBackground(Rectangle().fill(theme.colors.surface.raised))
 
                 AboutLegalSection(account: model.tuya.isConfigured ? model.tuya : nil, localData: model.local)
             }
+            .themedForm(theme)
             .navigationTitle("Configurações")
             .sheet(isPresented: $addingDevice) { AddDeviceView() }
         }
@@ -31,18 +35,13 @@ struct SettingsView: View {
 }
 
 private struct IntegrationRow: View {
+    @Environment(\.trTheme) private var theme
     let provider: any LightProvider
 
     var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(provider.source.displayName)
-                Text(detail).font(.footnote).foregroundStyle(.secondary)
-            }
-            Spacer()
-            Image(systemName: icon).foregroundStyle(color)
+        TRListRow(verbatim: provider.source.displayName, subtitle: detail) {
+            TRIconView(icon, renderingMode: .monochrome).foregroundStyle(tone.foreground(theme.colors))
         }
-        .accessibilityElement(children: .combine)
     }
 
     private var detail: String {
@@ -54,20 +53,20 @@ private struct IntegrationRow: View {
         }
     }
 
-    private var icon: String {
+    private var icon: TRIcon {
         switch provider.status {
-        case .ready: "checkmark.circle.fill"
-        case .failed: "exclamationmark.triangle.fill"
-        case .loading, .idle: "clock"
-        default: "info.circle"
+        case .ready: .success
+        case .failed: .warning
+        case .loading, .idle: .pending
+        default: .info
         }
     }
 
-    private var color: Color {
+    private var tone: TRTone {
         switch provider.status {
-        case .ready: .green
-        case .failed: .orange
-        default: .secondary
+        case .ready: .success
+        case .failed: .warning
+        default: .neutral
         }
     }
 }

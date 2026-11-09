@@ -7,8 +7,11 @@ let package = Package(
     products: [
         .library(name: "LumiLegal", targets: ["LumiLegal"]),
     ],
+    dependencies: [
+        .package(url: "https://github.com/tassiomr/TRDesignSystem.git", .upToNextMinor(from: "0.2.0")),
+    ],
     targets: [
-        .target(name: "LumiLegal"),
+        .target(name: "LumiLegal", dependencies: [.product(name: "TRDesignSystem", package: "TRDesignSystem")]),
         .testTarget(name: "LumiLegalTests", dependencies: ["LumiLegal"]),
     ]
 )

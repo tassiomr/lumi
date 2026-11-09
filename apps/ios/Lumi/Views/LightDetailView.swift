@@ -1,9 +1,11 @@
 import SwiftUI
+import TRDesignSystem
 
 struct LightDetailView: View {
     @Environment(LightStore.self) private var store
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.trTheme) private var theme
     let lightID: String
 
     @State private var brightness: Double = 1
@@ -20,7 +22,9 @@ struct LightDetailView: View {
                 .onAppear { sync(light) }
                 .onChange(of: light.state) { _, _ in sync(light) }
         } else {
-            ContentUnavailableView("Lâmpada indisponível", systemImage: "lightbulb.slash")
+            TRStateView(.error, title: "Lâmpada indisponível", icon: .lightUnavailable)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(theme.colors.background.secondary)
         }
     }
 
@@ -33,6 +37,7 @@ struct LightDetailView: View {
             infoSection(light)
             removeSection(light)
         }
+        .themedForm(theme)
         .navigationTitle(light.name)
         .navigationBarTitleDisplayMode(.inline)
         .onDisappear { if light.source != .homeKit { store.local.setRoom(roomName, for: light.id) } }
@@ -52,40 +57,42 @@ struct LightDetailView: View {
 
     @ViewBuilder private func headerSection(_ light: Light) -> some View {
         Section {
-            VStack(spacing: 16) {
-                Image(systemName: light.state.isOn ? "lightbulb.fill" : "lightbulb")
-                    .font(.system(size: 64))
-                    .foregroundStyle(Theme.color(for: light.state))
-                    .shadow(color: light.state.isOn ? Theme.color(for: light.state).opacity(0.8) : .clear, radius: 28)
+            VStack(spacing: theme.spacing.stack.loose) {
+                TRIconView(light.state.isOn ? .lightOn : .light, size: .large)
+                    .trTextStyle(.metric)
+                    .foregroundStyle(LightAppearance.style(for: light.state, colors: theme.colors))
+                    .shadow(color: light.state.isOn ? theme.colors.glow.color : .clear, radius: theme.spacing.lg)
                     .frame(maxWidth: .infinity)
-                    .padding(.top, 8)
-                    .accessibilityHidden(true)
+                    .padding(.top, theme.spacing.xs)
                 Toggle(isOn: Binding(get: { light.state.isOn }, set: { on in Task { await store.send(.power(on), to: light) } })) {
-                    Text(light.state.isOn ? "Ligada" : "Desligada").font(.headline)
+                    Text(light.state.isOn ? "Ligada" : "Desligada").trTextStyle(.headline)
                 }
                 .disabled(!light.isReachable)
             }
             if !light.isReachable {
-                Label("A lâmpada não está respondendo. Verifique se ela está energizada e conectada.", systemImage: "exclamationmark.triangle")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
+                TRBanner("Sem resposta", message: "A lâmpada não está respondendo. Verifique se ela está energizada e conectada.", tone: .warning)
+                    .listRowInsets(EdgeInsets())
+                    .listRowBackground(Color.clear)
             }
         }
+        .listRowBackground(Rectangle().fill(theme.colors.surface.raised))
     }
 
     @ViewBuilder private func brightnessSection(_ light: Light) -> some View {
         if light.capabilities.contains(.brightness) {
             Section("Brilho") {
                 HStack {
-                    Image(systemName: "sun.min").accessibilityHidden(true)
+                    TRIconView(.brightnessLow)
                     Slider(value: $brightness, in: 0.01...1) { editing in
                         if !editing { Task { await store.send(.brightness(brightness), to: light) } }
                     }
                     .accessibilityLabel("Brilho")
                     .accessibilityValue("\(Int(brightness * 100))%")
-                    Image(systemName: "sun.max.fill").accessibilityHidden(true)
+                    TRIconView(.brightnessHigh)
                 }
+                .foregroundStyle(theme.colors.foreground.secondary)
             }
+            .listRowBackground(Rectangle().fill(theme.colors.surface.raised))
             .disabled(!light.isReachable)
         }
     }
@@ -97,16 +104,17 @@ struct LightDetailView: View {
                     value: $kelvin,
                     in: light.kelvinRange,
                     label: { Text("Temperatura de branco") },
-                    minimumValueLabel: { Text("Quente").font(.caption) },
-                    maximumValueLabel: { Text("Fria").font(.caption) },
+                    minimumValueLabel: { Text("Quente").trTextStyle(.caption) },
+                    maximumValueLabel: { Text("Fria").trTextStyle(.caption) },
                     onEditingChanged: { editing in
                         if !editing { Task { await store.send(.temperature(kelvin: kelvin), to: light) } }
                     }
                 )
-                .tint(Theme.color(kelvin: kelvin))
+                .tint(LightAppearance.color(kelvin: kelvin))
                 .accessibilityLabel("Temperatura de branco")
                 .accessibilityValue("\(Int(kelvin)) kelvin")
             }
+            .listRowBackground(Rectangle().fill(theme.colors.surface.raised))
             .disabled(!light.isReachable)
         }
     }
@@ -114,26 +122,28 @@ struct LightDetailView: View {
     @ViewBuilder private func colorSection(_ light: Light) -> some View {
         if light.capabilities.contains(.color) {
             Section("Cor") {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 14) {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: theme.spacing.sm) {
                     ForEach(presetHues, id: \.self) { hue in
                         Button {
                             Task { await store.send(.color(hue: hue, saturation: 0.85), to: light) }
                         } label: {
                             Circle()
-                                .fill(Color(hue: hue / 360, saturation: 0.85, brightness: 1))
-                                .frame(width: 40, height: 40)
+                                .fill(LightAppearance.color(hue: hue, saturation: 0.85))
+                                .frame(width: theme.metrics.minimumHitTarget, height: theme.metrics.minimumHitTarget)
+                                .overlay(Circle().strokeBorder(theme.colors.border.subtle, lineWidth: TRBorder.default))
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel(Self.colorName(hue))
                     }
                 }
-                .padding(.vertical, 6)
+                .padding(.vertical, theme.spacing.xs)
                 ColorPicker("Outra cor", selection: $color, supportsOpacity: false)
                     .onChange(of: color) { _, newValue in
                         let (hue, saturation) = Self.hueSaturation(newValue)
                         Task { await store.send(.color(hue: hue, saturation: saturation), to: light) }
                     }
             }
+            .listRowBackground(Rectangle().fill(theme.colors.surface.raised))
             .disabled(!light.isReachable)
         }
     }
@@ -151,7 +161,7 @@ struct LightDetailView: View {
                 store.local.toggleFavorite(light.id)
             } label: {
                 Label(store.local.isFavorite(light.id) ? "Remover das favoritas" : "Adicionar às favoritas",
-                      systemImage: store.local.isFavorite(light.id) ? "star.slash" : "star")
+                      trIcon: store.local.isFavorite(light.id) ? .unfavorite : .favorite)
             }
             LabeledContent("Integração", value: light.source.displayName)
         } footer: {
@@ -159,6 +169,7 @@ struct LightDetailView: View {
                 Text("Nome e ambiente desta lâmpada são definidos no app Casa.")
             }
         }
+        .listRowBackground(Rectangle().fill(theme.colors.surface.raised))
     }
 
     @ViewBuilder private func removeSection(_ light: Light) -> some View {
@@ -168,6 +179,7 @@ struct LightDetailView: View {
             } footer: {
                 Text("A lâmpada sai da sua conta e pode ser pareada novamente.")
             }
+            .listRowBackground(Rectangle().fill(theme.colors.surface.raised))
         }
     }
 

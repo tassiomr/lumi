@@ -1,4 +1,5 @@
 import SwiftUI
+import TRDesignSystem
 
 /// Seção "Sobre e Legal" para a tela de Configurações do Lumi.
 ///
@@ -15,6 +16,7 @@ public struct AboutLegalSection: View {
     private let links: LumiLinks?
     private let account: (any LumiAccountDeleting)?
     private let localData: (any LumiLocalDataErasing)?
+    @Environment(\.trTheme) private var theme
 
     public init(
         links: LumiLinks? = .fromBundle(),
@@ -37,8 +39,8 @@ public struct AboutLegalSection: View {
                 }
             } else {
                 Label("Domínio do site não configurado (\(LumiLinks.infoPlistKey) no Info.plist).",
-                      systemImage: "exclamationmark.triangle")
-                    .foregroundStyle(.secondary)
+                      trIcon: .warning)
+                    .foregroundStyle(theme.colors.feedback.warning)
             }
             // A exclusão funciona dentro do app mesmo sem o site configurado.
             NavigationLink {
@@ -51,6 +53,7 @@ public struct AboutLegalSection: View {
         } header: {
             Text("Sobre e Legal")
         }
+        .listRowBackground(Rectangle().fill(theme.colors.surface.raised))
     }
 
     /// Páginas abertas diretamente; a exclusão tem uma tela própria com ações dentro do app.

@@ -1,43 +1,40 @@
 import SwiftUI
+import TRDesignSystem
 
 struct ScenesView: View {
     @Environment(LightStore.self) private var store
     @Environment(AppModel.self) private var model
+    @Environment(\.trTheme) private var theme
     @State private var editing: LumiScene?
     @State private var creating = false
     @State private var applied: String?
 
-    private let columns = [GridItem(.adaptive(minimum: 150), spacing: 12)]
-
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 28) {
+                VStack(alignment: .leading, spacing: theme.spacing.section) {
                     if store.local.scenes.isEmpty && homeScenes.isEmpty {
-                        ContentUnavailableView {
-                            Label("Nenhuma cena ainda", systemImage: "sparkles")
-                        } description: {
-                            Text("Ajuste as luzes do jeito que você gosta e salve como uma cena para repetir com um toque.")
-                        } actions: {
-                            Button("Criar cena") { creating = true }
-                                .buttonStyle(.borderedProminent)
-                                .disabled(store.lights.isEmpty)
-                        }
-                        .padding(.top, 40)
+                        TRStateView(
+                            .empty,
+                            title: "Nenhuma cena ainda",
+                            message: "Ajuste as luzes do jeito que você gosta e salve como uma cena para repetir com um toque.",
+                            icon: .sparkles,
+                            action: store.lights.isEmpty ? nil : .init("Criar cena") { creating = true }
+                        )
                     }
 
                     if !store.local.scenes.isEmpty {
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("Cenas do Lumi").font(.title3.weight(.semibold)).accessibilityAddTraits(.isHeader)
-                            LazyVGrid(columns: columns, spacing: 12) {
+                        VStack(alignment: .leading, spacing: theme.spacing.stack.loose) {
+                            TRSectionHeader("Cenas do Lumi")
+                            TRAdaptiveGrid(minimumItemWidth: 150, spacing: theme.spacing.sm) {
                                 ForEach(store.local.scenes) { scene in
                                     SceneCard(title: scene.name, symbol: scene.symbol, subtitle: lightCount(scene), isApplied: applied == scene.id.uuidString) {
                                         applied = scene.id.uuidString
                                         Task { await store.apply(scene) }
                                     }
                                     .contextMenu {
-                                        Button("Editar", systemImage: "pencil") { editing = scene }
-                                        Button("Apagar", systemImage: "trash", role: .destructive) { store.local.deleteScene(scene.id) }
+                                        Button { editing = scene } label: { Label("Editar", trIcon: .edit) }
+                                        Button(role: .destructive) { store.local.deleteScene(scene.id) } label: { Label("Apagar", trIcon: .delete) }
                                     }
                                 }
                             }
@@ -45,9 +42,9 @@ struct ScenesView: View {
                     }
 
                     if !homeScenes.isEmpty {
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("Cenas do app Casa").font(.title3.weight(.semibold)).accessibilityAddTraits(.isHeader)
-                            LazyVGrid(columns: columns, spacing: 12) {
+                        VStack(alignment: .leading, spacing: theme.spacing.stack.loose) {
+                            TRSectionHeader("Cenas do app Casa")
+                            TRAdaptiveGrid(minimumItemWidth: 150, spacing: theme.spacing.sm) {
                                 ForEach(homeScenes) { scene in
                                     SceneCard(title: scene.name, symbol: "house", subtitle: String(localized: "HomeKit"), isApplied: applied == scene.id) {
                                         applied = scene.id
@@ -60,13 +57,13 @@ struct ScenesView: View {
                         }
                     }
                 }
-                .padding()
+                .trPagePadding()
             }
-            .background(BackgroundGlow())
+            .background(theme.colors.background.secondary)
             .navigationTitle("Cenas")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
-                    Button { creating = true } label: { Label("Nova cena", systemImage: "plus") }
+                    Button { creating = true } label: { Label("Nova cena", trIcon: .add) }
                         .disabled(store.lights.isEmpty)
                 }
             }
@@ -83,6 +80,7 @@ struct ScenesView: View {
 }
 
 struct SceneCard: View {
+    @Environment(\.trTheme) private var theme
     let title: String
     let symbol: String
     let subtitle: String
@@ -90,33 +88,37 @@ struct SceneCard: View {
     let action: () -> Void
 
     var body: some View {
+        let iconSize = theme.metrics.minimumHitTarget
         Button(action: action) {
-            VStack(alignment: .leading, spacing: 18) {
-                Image(systemName: symbol)
-                    .font(.title2)
-                    .foregroundStyle(.white)
-                    .frame(width: 44, height: 44)
-                    .background(Theme.gradient, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(title).font(.headline).foregroundStyle(.primary).lineLimit(2)
-                    Text(subtitle).font(.subheadline).foregroundStyle(.secondary)
+            TRCard(.elevated, padding: theme.spacing.inset.regular) {
+                VStack(alignment: .leading, spacing: theme.spacing.stack.loose) {
+                    Image(systemName: symbol)
+                        .trTextStyle(.title2)
+                        .foregroundStyle(theme.colors.action.onAccent)
+                        .frame(width: iconSize, height: iconSize)
+                        .background(theme.colors.action.accent, in: .tr(theme.shape.control))
+                    VStack(alignment: .leading, spacing: theme.spacing.xxxs) {
+                        Text(title).trTextStyle(.headline).foregroundStyle(theme.colors.foreground.primary).lineLimit(2)
+                        Text(subtitle).trTextStyle(.subheadline).foregroundStyle(theme.colors.foreground.secondary)
+                    }
                 }
             }
-            .padding(14)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
             .overlay {
-                RoundedRectangle(cornerRadius: 22, style: .continuous)
-                    .strokeBorder(isApplied ? Theme.electric.opacity(0.6) : .clear, lineWidth: 1.5)
+                if isApplied {
+                    RoundedRectangle.tr(theme.shape.card)
+                        .strokeBorder(theme.colors.action.primary, lineWidth: TRBorder.emphasized)
+                }
             }
         }
         .buttonStyle(.plain)
+        .accessibilityAddTraits(isApplied ? .isSelected : [])
         .accessibilityHint("Aplica a cena")
     }
 }
 
 struct SceneEditorView: View {
     @Environment(LightStore.self) private var store
+    @Environment(\.trTheme) private var theme
     @Environment(\.dismiss) private var dismiss
     let scene: LumiScene?
 
@@ -129,41 +131,41 @@ struct SceneEditorView: View {
             Form {
                 Section {
                     TextField("Nome da cena", text: $name)
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 12) {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: theme.spacing.sm) {
                         ForEach(LumiScene.symbols, id: \.self) { item in
+                            let isSelected = symbol == item
+                            let size = theme.metrics.height(.large)
                             Button { symbol = item } label: {
                                 Image(systemName: item)
-                                    .font(.title3)
-                                    .frame(width: 48, height: 48)
-                                    .foregroundStyle(symbol == item ? .white : .primary)
-                                    .background(symbol == item ? AnyShapeStyle(Theme.gradient) : AnyShapeStyle(Color.secondary.opacity(0.12)),
-                                                in: RoundedRectangle(cornerRadius: 12))
+                                    .trTextStyle(.title3)
+                                    .frame(width: size, height: size)
+                                    .foregroundStyle(isSelected ? theme.colors.action.onPrimary : theme.colors.foreground.primary)
+                                    .background(isSelected ? theme.colors.action.primary : theme.colors.background.tertiary,
+                                                in: .tr(theme.shape.control))
                             }
                             .buttonStyle(.plain)
                             .accessibilityLabel(item)
                             .accessibilityAddTraits(symbol == item ? .isSelected : [])
                         }
                     }
-                    .padding(.vertical, 4)
+                    .padding(.vertical, theme.spacing.xxs)
                 }
+                .listRowBackground(Rectangle().fill(theme.colors.surface.raised))
                 Section {
                     ForEach(store.lights) { light in
                         Button {
                             if selected.contains(light.id) { selected.remove(light.id) } else { selected.insert(light.id) }
                         } label: {
-                            HStack {
-                                Image(systemName: light.state.isOn ? "lightbulb.fill" : "lightbulb")
-                                    .foregroundStyle(Theme.color(for: light.state))
-                                VStack(alignment: .leading) {
-                                    Text(light.name).foregroundStyle(.primary)
-                                    Text(light.room ?? light.source.displayName).font(.caption).foregroundStyle(.secondary)
-                                }
-                                Spacer()
+                            TRListRow(
+                                verbatim: light.name,
+                                subtitle: light.room ?? light.source.displayName,
+                                icon: light.state.isOn ? .lightOn : .light,
+                                iconTint: light.state.isOn ? theme.colors.lightOn : theme.colors.foreground.tertiary
+                            ) {
                                 if selected.contains(light.id) {
-                                    Image(systemName: "checkmark").foregroundStyle(Theme.accent)
+                                    TRIconView(.checkmark).foregroundStyle(theme.colors.foreground.accent)
                                 }
                             }
-                            .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
                         .accessibilityAddTraits(selected.contains(light.id) ? .isSelected : [])
@@ -173,7 +175,9 @@ struct SceneEditorView: View {
                 } footer: {
                     Text("A cena salva o estado atual das lâmpadas escolhidas — ligada ou desligada, brilho, cor e temperatura. Ela fica guardada apenas neste iPhone.")
                 }
+                .listRowBackground(Rectangle().fill(theme.colors.surface.raised))
             }
+            .themedForm(theme)
             .navigationTitle(scene == nil ? "Nova cena" : "Editar cena")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

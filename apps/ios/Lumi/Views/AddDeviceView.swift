@@ -1,10 +1,12 @@
 import SwiftUI
+import TRDesignSystem
 
 /// Pareamento de lâmpadas Tuya no modo AP (ponto de acesso), recomendado pela Tuya para iOS.
 /// A senha do Wi‑Fi é enviada à lâmpada durante o pareamento e não é guardada pelo Lumi.
 struct AddDeviceView: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.trTheme) private var theme
 
     enum Step { case choose, prepare, network, joinHotspot, pairing, done(Light?), failed(String) }
 
@@ -36,16 +38,17 @@ struct AddDeviceView: View {
             Form {
                 Section {
                     Link(destination: URL(string: "x-hm://")!) {
-                        Label("HomeKit ou Matter — abrir o app Casa", systemImage: "house")
+                        Label("HomeKit ou Matter — abrir o app Casa", trIcon: .home)
                     }
                 } footer: {
                     Text("No app Casa, toque em + › Adicionar Acessório e escaneie o código da lâmpada. Ela aparecerá no Lumi automaticamente.")
                 }
+                .listRowBackground(Rectangle().fill(theme.colors.surface.raised))
                 Section {
                     Button {
                         step = .prepare
                     } label: {
-                        Label("Lâmpada Tuya (Wi‑Fi)", systemImage: "wifi")
+                        Label("Lâmpada Tuya (Wi‑Fi)", trIcon: .wifi)
                     }
                     .disabled(!model.tuya.isConfigured)
                 } footer: {
@@ -55,11 +58,13 @@ struct AddDeviceView: View {
                         Text("A integração Tuya ainda não está disponível nesta versão do Lumi.")
                     }
                 }
+                .listRowBackground(Rectangle().fill(theme.colors.surface.raised))
             }
+            .themedForm(theme)
 
         case .prepare:
             InstructionsView(
-                symbol: "lightbulb.max",
+                icon: .lightPairing,
                 title: "Coloque a lâmpada em modo de pareamento",
                 steps: [
                     "Ligue e desligue a lâmpada 3 vezes até ela piscar rápido.",
@@ -83,15 +88,19 @@ struct AddDeviceView: View {
                 } footer: {
                     Text("A maioria das lâmpadas só funciona em redes de 2,4 GHz. A senha é enviada apenas para a lâmpada durante o pareamento e não é guardada pelo Lumi.")
                 }
+                .listRowBackground(Rectangle().fill(theme.colors.surface.raised))
                 Section {
-                    Button("Continuar") { step = .joinHotspot }
+                    TRButton("Continuar", size: .large, fullWidth: true) { step = .joinHotspot }
                         .disabled(ssid.trimmingCharacters(in: .whitespaces).isEmpty)
+                        .listRowInsets(EdgeInsets())
+                        .listRowBackground(Color.clear)
                 }
             }
+            .themedForm(theme)
 
         case .joinHotspot:
             InstructionsView(
-                symbol: "wifi.router",
+                icon: .router,
                 title: "Conecte o iPhone à lâmpada",
                 steps: [
                     "Abra Ajustes › Wi‑Fi.",
@@ -102,33 +111,27 @@ struct AddDeviceView: View {
             ) { startPairing() }
 
         case .pairing:
-            VStack(spacing: 20) {
-                ProgressView().controlSize(.large)
-                Text("Pareando…").font(.title3.weight(.semibold))
-                Text("Isso pode levar até 2 minutos. Mantenha o Lumi aberto e a lâmpada ligada.")
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.secondary)
-            }
-            .padding(32)
-            .frame(maxHeight: .infinity)
+            TRStateView(.loading, title: "Pareando…", message: "Isso pode levar até 2 minutos. Mantenha o Lumi aberto e a lâmpada ligada.")
+                .trPagePadding()
+                .frame(maxHeight: .infinity)
+                .background(theme.colors.background.secondary)
 
         case .done(let light):
-            ContentUnavailableView {
-                Label("Lâmpada adicionada", systemImage: "checkmark.circle.fill")
-            } description: {
-                Text(light.map { "“\($0.name)” já pode ser controlada no Lumi." } ?? "Sua lâmpada já pode ser controlada no Lumi.")
-            } actions: {
-                Button("Concluir") { dismiss() }.buttonStyle(.borderedProminent)
-            }
+            TRStateView(
+                .success,
+                title: "Lâmpada adicionada",
+                message: light.map { "“\($0.name)” já pode ser controlada no Lumi." as LocalizedStringKey } ?? "Sua lâmpada já pode ser controlada no Lumi.",
+                action: .init("Concluir") { dismiss() }
+            )
+            .trPagePadding()
+            .frame(maxHeight: .infinity)
+            .background(theme.colors.background.secondary)
 
         case .failed(let message):
-            ContentUnavailableView {
-                Label("Não foi possível parear", systemImage: "exclamationmark.triangle")
-            } description: {
-                Text(message)
-            } actions: {
-                Button("Tentar novamente") { step = .prepare }.buttonStyle(.borderedProminent)
-            }
+            TRStateView(.error, title: "Não foi possível parear", message: "\(message)", action: .init("Tentar novamente") { step = .prepare })
+                .trPagePadding()
+                .frame(maxHeight: .infinity)
+                .background(theme.colors.background.secondary)
         }
     }
 
@@ -150,7 +153,8 @@ struct AddDeviceView: View {
 }
 
 private struct InstructionsView: View {
-    let symbol: String
+    @Environment(\.trTheme) private var theme
+    let icon: TRIcon
     let title: LocalizedStringKey
     let steps: [LocalizedStringKey]
     let button: LocalizedStringKey
@@ -158,32 +162,29 @@ private struct InstructionsView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                Image(systemName: symbol)
-                    .font(.system(size: 48))
-                    .foregroundStyle(Theme.gradient)
+            VStack(alignment: .leading, spacing: theme.spacing.lg) {
+                TRIconView(icon, size: .large)
+                    .trTextStyle(.largeTitle)
+                    .foregroundStyle(theme.colors.foreground.accent)
                     .frame(maxWidth: .infinity)
-                    .accessibilityHidden(true)
-                Text(title).font(.title2.weight(.semibold))
-                VStack(alignment: .leading, spacing: 14) {
+                Text(title)
+                    .trTextStyle(.title2)
+                    .foregroundStyle(theme.colors.foreground.primary)
+                    .accessibilityAddTraits(.isHeader)
+                VStack(alignment: .leading, spacing: theme.spacing.stack.loose) {
                     ForEach(Array(steps.enumerated()), id: \.offset) { index, text in
-                        HStack(alignment: .top, spacing: 12) {
-                            Text("\(index + 1)")
-                                .font(.subheadline.weight(.semibold))
-                                .frame(width: 28, height: 28)
-                                .background(Theme.electric.opacity(0.15), in: Circle())
-                                .foregroundStyle(Theme.electric)
+                        HStack(alignment: .firstTextBaseline, spacing: theme.spacing.sm) {
+                            TRBadge(verbatim: "\(index + 1)", tone: .accent)
                             Text(text)
+                                .trTextStyle(.body)
+                                .foregroundStyle(theme.colors.foreground.primary)
                         }
                     }
                 }
-                Button(action: action) {
-                    Text(button).frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
+                TRButton(button, size: .large, fullWidth: true) { action() }
             }
-            .padding(24)
+            .trPagePadding()
         }
+        .background(theme.colors.background.secondary)
     }
 }
